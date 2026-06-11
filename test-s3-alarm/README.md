@@ -78,7 +78,7 @@ aws sqs create-queue --queue-name test-inbox
 
 # Subscribe it to the SNS topic
 aws sns subscribe \
-  --topic-arn arn:aws:sns:us-east-1:000000000000:hse-dev-example-com-s3-change-alarm \
+  --topic-arn arn:aws:sns:us-east-1:000000000000:claudio-dev-example-com-s3-change-alarm \
   --protocol sqs \
   --notification-endpoint arn:aws:sqs:us-east-1:000000000000:test-inbox
 ```
@@ -108,7 +108,7 @@ You should see a message whose `Body` contains an SNS notification envelope wrap
 ```json
 {
   "Type": "Notification",
-  "TopicArn": "arn:aws:sns:us-east-1:000000000000:hse-dev-example-com-s3-change-alarm",
+  "TopicArn": "arn:aws:sns:us-east-1:000000000000:claudio-dev-example-com-s3-change-alarm",
   "Message": "{\"source\":\"aws.s3\",\"detail-type\":\"Object Created\", ...}"
 }
 ```

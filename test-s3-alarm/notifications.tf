@@ -7,10 +7,10 @@ resource "aws_s3_bucket_notification" "wp_bucket_eventbridge" {
 
 resource "aws_sns_topic" "wp_s3_change_alarm" {
   count = var.enable_s3_change_alarm ? 1 : 0
-  name  = "hse-${replace(local.fqdn, ".", "-")}-s3-change-alarm"
+  name  = "claudio-${replace(local.fqdn, ".", "-")}-s3-change-alarm"
 
   tags = {
-    Name = "hse-${local.fqdn}-s3-change-alarm"
+    Name = "claudio-${local.fqdn}-s3-change-alarm"
   }
 }
 
@@ -43,7 +43,7 @@ resource "aws_sns_topic_subscription" "wp_s3_change_alarm_email" {
 
 resource "aws_cloudwatch_event_rule" "wp_s3_change" {
   count       = var.enable_s3_change_alarm ? 1 : 0
-  name        = "hse-${replace(local.fqdn, ".", "-")}-s3-change"
+  name        = "claudio-${replace(local.fqdn, ".", "-")}-s3-change"
   description = "Fires when objects are created or deleted in ${aws_s3_bucket.wp_bucket.bucket}"
 
   event_pattern = jsonencode({
@@ -57,7 +57,7 @@ resource "aws_cloudwatch_event_rule" "wp_s3_change" {
   })
 
   tags = {
-    Name = "hse-${local.fqdn}-s3-change"
+    Name = "claudio-${local.fqdn}-s3-change"
   }
 }
 
