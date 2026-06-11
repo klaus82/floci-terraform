@@ -4,11 +4,49 @@ services:
     ports:
       - "4566:4566"
     volumes:
-      # Local directory bind mount (default)
       - ./data:/app/data
+    networks:
+      - floci_default
 
-      # OR named volume (optional):
-      # - floci-data:/app/data
+  floci-api:
+    build:
+      context: ./floci-ui/packages/api
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./floci-ui/packages/api/src:/app/src
+    environment:
+      PORT: "3001"
+      FLOCI_ENDPOINT: http://floci:4566
+      AWS_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+    depends_on:
+      - floci
+    networks:
+      - floci_default
 
-#volumes:
-#  floci-data:
+  floci-ui:
+    build:
+      context: ./floci-ui/packages/frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./floci-ui/packages/frontend/src:/app/src
+      - ./floci-ui/packages/frontend/index.html:/app/index.html
+      - ./floci-ui/packages/frontend/vite.config.ts:/app/vite.config.ts
+      - ./floci-ui/packages/frontend/tsconfig.json:/app/tsconfig.json
+      - ./floci-ui/packages/frontend/tsconfig.node.json:/app/tsconfig.node.json
+    environment:
+      API_TARGET: http://floci-api:3001
+      VITE_USE_POLLING: "true"
+    depends_on:
+      - floci-api
+    networks:
+      - floci_default
+
+networks:
+  floci_default:
+    driver: bridge
