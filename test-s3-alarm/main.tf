@@ -3,5 +3,5 @@ locals {
 }
 
 resource "aws_s3_bucket" "wp_bucket" {
-  bucket = "wp-bucket-test"
+  bucket = "cm-wp-bucket-test"
 }

@@ -7,4 +7,10 @@ terraform {
       version = "~> 5.0"
     }
   }
+
+  backend "s3" {
+    bucket = "cm-test-s3-notification"
+    key    = "test-s3-alarm/terraform.tfstate"
+    region = "eu-west-1"
+  }
 }
